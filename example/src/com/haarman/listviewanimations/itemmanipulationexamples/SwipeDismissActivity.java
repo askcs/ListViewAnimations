@@ -35,8 +35,11 @@ import com.haarman.listviewanimations.itemmanipulation.SwipeDismissAdapter;
 import com.haarman.listviewanimations.itemmanipulation.contextualundo.ContextualUndoAdapter;
 import com.haarman.listviewanimations.itemmanipulation.contextualundo.ContextualUndoAdapter.CountDownFormatter;
 import com.haarman.listviewanimations.itemmanipulation.contextualundo.ContextualUndoAdapter.DeleteItemCallback;
+import com.haarman.listviewanimations.itemmanipulations.contextualdialog.ContextualDialogAdapter;
+import com.haarman.listviewanimations.itemmanipulations.contextualdialog.ContextualDialogAdapter.CancelItemCallback;
+import com.haarman.listviewanimations.itemmanipulations.contextualdialog.ContextualDialogAdapter.ConfirmItemCallback;
 
-public class SwipeDismissActivity extends MyListActivity implements OnNavigationListener, OnDismissCallback, DeleteItemCallback {
+public class SwipeDismissActivity extends MyListActivity implements OnNavigationListener, OnDismissCallback, DeleteItemCallback, ConfirmItemCallback, CancelItemCallback {
 
 	private ArrayAdapter<Integer> mAdapter;
 
@@ -79,7 +82,19 @@ public class SwipeDismissActivity extends MyListActivity implements OnNavigation
 		mAdapter.remove(position);
 		mAdapter.notifyDataSetChanged();
 	}
-
+	
+	@Override
+	public void confirmItem(int position) {
+	  Toast.makeText( this, "confirmed", Toast.LENGTH_SHORT ).show();
+	  mAdapter.remove(position);
+    mAdapter.notifyDataSetChanged();
+	}
+	@Override
+  public void cancelItem(int position) {
+	  Toast.makeText( this, "canceled", Toast.LENGTH_SHORT ).show();
+    // noop
+  }
+	
 	private void setContextualUndoWithTimedDeleteAdapter() {
 		ContextualUndoAdapter adapter = new ContextualUndoAdapter(mAdapter, R.layout.undo_row, R.id.undo_row_undobutton, 3000);
 		adapter.setAbsListView(getListView());
@@ -94,6 +109,14 @@ public class SwipeDismissActivity extends MyListActivity implements OnNavigation
 		adapter.setDeleteItemCallback(this);
 	}
 
+	private void setContextualDialogAdapter() {
+	  ContextualDialogAdapter adapter = new ContextualDialogAdapter(mAdapter, R.layout.dialog_row, R.id.dialog_row_confirmbutton, R.id.dialog_row_cancelbutton);
+    adapter.setAbsListView(getListView());
+    getListView().setAdapter(adapter);
+    adapter.setConfirmItemCallback( this );
+    adapter.setCancelItemCallback( this );
+  }
+	
 	private class MyFormatCountDownCallback implements CountDownFormatter {
 
 		@Override
@@ -124,6 +147,9 @@ public class SwipeDismissActivity extends MyListActivity implements OnNavigation
 		case 3:
 			setContextualUndoWithTimedDeleteAndCountDownAdapter();
 			return true;
+		case 4:
+		  setContextualDialogAdapter();
+		  return true;
 		default:
 			return false;
 		}
@@ -132,7 +158,7 @@ public class SwipeDismissActivity extends MyListActivity implements OnNavigation
 	private class AnimSelectionAdapter extends ArrayAdapter<String> {
 
 		public AnimSelectionAdapter() {
-			addAll("Swipe-To-Dismiss", "Contextual Undo", "CU - Timed Delete", "CU - Count Down");
+			addAll("Swipe-To-Dismiss", "Contextual Undo", "CU - Timed Delete", "CU - Count Down", "Contextual Dialog");
 		}
 
 		@Override

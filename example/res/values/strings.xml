@@ -22,6 +22,9 @@
     <string name="taptoundo">Tap to undo</string>
     <string name="explainexpand">Tap on cards to expand or collapse them</string>
     <string name="expandorcollapsecard">This is card number %d</string>
+    
+    <string name="button_confirm">Confirm</string>
+    <string name="button_cancel">Cancel</string>
 
     <plurals name="countdown_seconds">
         <item quantity="one">Dismissing in 1...</item>
