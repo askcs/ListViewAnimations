@@ -1,5 +1,6 @@
 package com.haarman.listviewanimations.itemmanipulationexamples;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import android.content.Context;
@@ -20,7 +21,7 @@ import com.haarman.listviewanimations.R;
 import com.haarman.listviewanimations.itemmanipulation.ExpandableListItemAdapter;
 import com.haarman.listviewanimations.swinginadapters.prepared.AlphaInAnimationAdapter;
 
-public class ExpandableListItemActivity extends MyListActivity {
+public class ExpandableListItemActivity extends MyListActivity<Integer> {
 
 	private MyExpandableListItemAdapter mExpandableListItemAdapter;
 	private boolean mLimited;
@@ -36,6 +37,11 @@ public class ExpandableListItemActivity extends MyListActivity {
 		getListView().setAdapter(alphaInAnimationAdapter);
 
 		Toast.makeText(this, R.string.explainexpand, Toast.LENGTH_LONG).show();
+	}
+	
+	@Override
+	protected ArrayList<Integer> getItems() {
+		return getIntegerItems();
 	}
 
 	private static class MyExpandableListItemAdapter extends ExpandableListItemAdapter<Integer> {
@@ -139,4 +145,6 @@ public class ExpandableListItemActivity extends MyListActivity {
 		}
 		return super.onOptionsItemSelected(item);
 	}
+	
+	
 }

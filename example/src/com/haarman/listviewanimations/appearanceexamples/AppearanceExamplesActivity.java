@@ -37,7 +37,7 @@ import com.haarman.listviewanimations.swinginadapters.prepared.SwingBottomInAnim
 import com.haarman.listviewanimations.swinginadapters.prepared.SwingLeftInAnimationAdapter;
 import com.haarman.listviewanimations.swinginadapters.prepared.SwingRightInAnimationAdapter;
 
-public class AppearanceExamplesActivity extends MyListActivity implements OnNavigationListener {
+public class AppearanceExamplesActivity extends MyListActivity<Integer> implements OnNavigationListener {
 
 	private BaseAdapter mAdapter;
 
@@ -51,6 +51,11 @@ public class AppearanceExamplesActivity extends MyListActivity implements OnNavi
 		getSupportActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
 		getSupportActionBar().setListNavigationCallbacks(new AnimSelectionAdapter(), this);
 		getSupportActionBar().setDisplayShowTitleEnabled(false);
+	}
+	
+	@Override
+	protected ArrayList<Integer> getItems() {
+		return getIntegerItems();
 	}
 
 	private void setAlphaAdapter() {

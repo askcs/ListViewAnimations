@@ -18,6 +18,7 @@
     <string name="animateremoval">Animate dismiss</string>
     <string name="removeselected">Remove selected</string>
     <string name="expandablelistitemadapter">Expand list items</string>
+    <string name="itemcontextmenu">Item context menu</string>
     <string name="itemdeleted">Item deleted</string>
     <string name="taptoundo">Tap to undo</string>
     <string name="explainexpand">Tap on cards to expand or collapse them</string>

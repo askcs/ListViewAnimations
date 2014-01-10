@@ -344,7 +344,9 @@ public class ContextualDialogAdapter extends BaseAdapterDecorator implements
       if ( getAbsListView() instanceof ListView ) {
         position -= ((ListView) getAbsListView()).getHeaderViewsCount();
       }
-      mConfirmItemCallback.confirmItem( position );
+      if ( mConfirmItemCallback != null ) {
+    	  mConfirmItemCallback.confirmItem( position );
+      }
     }
   }
   

@@ -45,6 +45,10 @@
         <activity
             android:name="com.haarman.listviewanimations.itemmanipulationexamples.ExpandableListItemActivity"
             android:label="@string/expandablelistitemadapter" />
+        <activity
+            android:name="com.haarman.listviewanimations.itemmanipulationexamples.ItemContextMenuActivity"
+            android:label="@string/itemcontextmenu" />
+        
     </application>
 
 </manifest>

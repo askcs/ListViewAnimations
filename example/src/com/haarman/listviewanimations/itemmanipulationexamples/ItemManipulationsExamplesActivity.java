@@ -22,6 +22,7 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.MenuItem;
 import android.view.View;
+
 import com.haarman.listviewanimations.R;
 
 public class ItemManipulationsExamplesActivity extends ActionBarActivity {
@@ -55,6 +56,11 @@ public class ItemManipulationsExamplesActivity extends ActionBarActivity {
 
 	public void onExpandListItemAdapterClicked(View view) {
 		Intent intent = new Intent(this, ExpandableListItemActivity.class);
+		startActivity(intent);
+	}
+	
+	public void onItemContextMenuClicked(View view) {
+		Intent intent = new Intent(this, ItemContextMenuActivity.class);
 		startActivity(intent);
 	}
 

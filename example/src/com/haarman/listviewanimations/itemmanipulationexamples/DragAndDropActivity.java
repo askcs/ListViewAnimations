@@ -1,5 +1,7 @@
 package com.haarman.listviewanimations.itemmanipulationexamples;
 
+import java.util.ArrayList;
+
 import android.os.Bundle;
 import android.widget.Toast;
 
@@ -9,7 +11,7 @@ import com.haarman.listviewanimations.R;
 import com.haarman.listviewanimations.swinginadapters.prepared.AlphaInAnimationAdapter;
 import com.haarman.listviewanimations.view.DynamicListView;
 
-public class DragAndDropActivity extends MyListActivity {
+public class DragAndDropActivity extends MyListActivity<Integer> {
 
 	private DynamicListView mListView;
 
@@ -28,5 +30,10 @@ public class DragAndDropActivity extends MyListActivity {
 		mListView.setAdapter(animAdapter);
 
 		Toast.makeText(this, "Long press an item to start dragging", Toast.LENGTH_LONG).show();
+	}
+	
+	@Override
+	protected ArrayList<Integer> getItems() {
+		return getIntegerItems();
 	}
 }

@@ -50,7 +50,7 @@ public class AnimateDismissActivity extends BaseActivity {
 		mSelectedPositions = new ArrayList<Integer>();
 
 		ListView listView = (ListView) findViewById(R.id.activity_animateremoval_listview);
-		mAdapter = new MyListAdapter(MyListActivity.getItems());
+		mAdapter = new MyListAdapter(MyListActivity.getIntegerItems());
 		final AnimateDismissAdapter<String> animateDismissAdapter = new AnimateDismissAdapter<String>(mAdapter, new MyOnDismissCallback());
 		animateDismissAdapter.setAbsListView(listView);
 		listView.setAdapter(animateDismissAdapter);

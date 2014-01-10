@@ -25,7 +25,7 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.TextView;
 
-public class MyListActivity extends BaseActivity {
+public abstract class MyListActivity<T> extends BaseActivity {
 
 	private ListView mListView;
 
@@ -34,18 +34,20 @@ public class MyListActivity extends BaseActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_mylist);
 		mListView = (ListView) findViewById(R.id.activity_mylist_listview);
-		mListView.setDivider(null);
+		// mListView.setDivider(null);
 	}
 
 	public ListView getListView() {
 		return mListView;
 	}
 
-	protected ArrayAdapter<Integer> createListAdapter() {
+	protected ArrayAdapter<T> createListAdapter() {
 		return new MyListAdapter(this, getItems());
 	}
 
-	public static ArrayList<Integer> getItems() {
+	protected abstract ArrayList<T> getItems();
+	
+	public static ArrayList<Integer> getIntegerItems() {
 		ArrayList<Integer> items = new ArrayList<Integer>();
 		for (int i = 0; i < 1000; i++) {
 			items.add(i);
@@ -53,11 +55,15 @@ public class MyListActivity extends BaseActivity {
 		return items;
 	}
 
-	private static class MyListAdapter extends ArrayAdapter<Integer> {
+	protected String rowToString(T item) {
+		return "This is row number " + item.toString();
+	}
+	
+	private class MyListAdapter extends ArrayAdapter<T> {
 
 		private Context mContext;
 
-		public MyListAdapter(Context context, ArrayList<Integer> items) {
+		public MyListAdapter(Context context, ArrayList<T> items) {
 			super(items);
 			mContext = context;
 		}
@@ -78,8 +84,10 @@ public class MyListActivity extends BaseActivity {
 			if (tv == null) {
 				tv = (TextView) LayoutInflater.from(mContext).inflate(R.layout.list_row, parent, false);
 			}
-			tv.setText("This is row number " + getItem(position));
+			tv.setText(rowToString(getItem(position)));
 			return tv;
 		}
+		
+		
 	}
 }
