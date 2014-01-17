@@ -19,6 +19,7 @@ package com.haarman.listviewanimations.itemmanipulation.contextualdialog;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
 @SuppressLint("ViewConstructor")
@@ -63,6 +64,9 @@ public class ContextualDialogView extends FrameLayout {
 	}
 
 	public void displayDialog() {
+		ViewGroup.LayoutParams lp = mDialogView.getLayoutParams();
+		lp.height = mContentView.getHeight();
+		mDialogView.setLayoutParams( lp );
 		mContentView.setVisibility(View.GONE);
 		mDialogView.setVisibility(View.VISIBLE);
 	}
