@@ -99,7 +99,7 @@ implements OnNavigationListener {
 	
 	@Override
 	protected String rowToString(Message message) {
-		return message.getBody();// message.getSubject();
+		return message.getSubject();
 	}
 	
 	private void setSwipeItemContextMenuAdapter() {
