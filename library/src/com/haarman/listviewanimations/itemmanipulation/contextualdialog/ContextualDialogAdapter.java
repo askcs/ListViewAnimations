@@ -68,7 +68,6 @@ public class ContextualDialogAdapter extends BaseAdapterDecorator
 
 	private ConfirmItemCallback mConfirmItemCallback;
 	private CancelItemCallback mCancelItemCallback;
-	private DialogItemCallback mDialogItemCallback;
 
 	private ContextualDialogView mCurrentDialogedView;
 	private long mCurrentDialogedId;
@@ -88,11 +87,6 @@ public class ContextualDialogAdapter extends BaseAdapterDecorator
 	 *            resource id of confirm button (within the layout)
 	 * @param cancelAction
 	 *            resource id of cancel button (within the layout)
-	 * @param defaultconfirm
-	 *            whether the default action should be confirm (true) or cancel
-	 *            (false.) This happens when the an item is currently dialoged,
-	 *            but then the list is scrolled or another item is swiped before
-	 *            confirm/cancel.
 	 */
 	public ContextualDialogAdapter(BaseAdapter baseAdapter, int dialogLayoutId,
 			int confirmActionId, int cancelActionId) {
@@ -108,7 +102,7 @@ public class ContextualDialogAdapter extends BaseAdapterDecorator
 		ContextualDialogView contextualDialogView = (ContextualDialogView) convertView;
 		if (contextualDialogView == null) {
 			contextualDialogView = new ContextualDialogView(
-					parent.getContext(), mDialogLayoutId);
+					parent.getContext(), mDialogLayoutId );
 			contextualDialogView.findViewById(mConfirmActionId)
 					.setOnClickListener(
 							new ConfirmListener(contextualDialogView));
@@ -156,9 +150,6 @@ public class ContextualDialogAdapter extends BaseAdapterDecorator
 		int position = getAbsListView().getPositionForView(dismissView);
 		if (getAbsListView() instanceof ListView) {
 			position -= ((ListView) getAbsListView()).getHeaderViewsCount();
-		}
-		if (mDialogItemCallback != null && !mDialogItemCallback.dialogItem(position)) {
-			return;
 		}
 		ContextualDialogView contextualUndoView = (ContextualDialogView) dismissView;
 		if (contextualUndoView.isContentDisplayed()) {
@@ -227,13 +218,6 @@ public class ContextualDialogAdapter extends BaseAdapterDecorator
 	 */
 	public void setCancelItemCallback(CancelItemCallback itemCallback) {
 		mCancelItemCallback = itemCallback;
-	}
-
-	/**
-	 * Set the DialogItemCallback for this ContextualUndoAdapter.
-	 */
-	public void setDialogItemCallback(DialogItemCallback itemCallback) {
-		mDialogItemCallback = itemCallback;
 	}
 
 	/**
@@ -320,20 +304,6 @@ public class ContextualDialogAdapter extends BaseAdapterDecorator
 		 *            the position of the item.
 		 */
 		public void confirmItem(int position);
-	}
-
-	/**
-	 * A callback which is used to determine if a given item is subject to
-	 * dialog.
-	 */
-	public interface DialogItemCallback {
-		/**
-		 * Called to see if a given item is subject to dialog.
-		 * 
-		 * @param position
-		 *            the position of the item.
-		 */
-		public boolean dialogItem(int position);
 	}
 
 	/**
