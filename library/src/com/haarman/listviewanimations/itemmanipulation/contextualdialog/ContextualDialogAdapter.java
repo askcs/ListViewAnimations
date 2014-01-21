@@ -187,7 +187,8 @@ public class ContextualDialogAdapter extends BaseAdapterDecorator
 
 	@Override
 	public void onListScrolled() {
-		performActionIfNecessary();
+		//performActionIfNecessary();
+		removePreviousContextualDialogIfPresent();
 	}
 
 	private void performActionIfNecessary() {

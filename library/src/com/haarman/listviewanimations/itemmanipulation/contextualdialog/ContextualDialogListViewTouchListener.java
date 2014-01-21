@@ -204,7 +204,9 @@ public class ContextualDialogListViewTouchListener implements SwipeOnTouchListen
 				animate(mDownView).translationX(dismissRight ? mViewWidth : -mViewWidth).alpha(0).setDuration(mAnimationTime).setListener(new AnimatorListenerAdapter() {
 					@Override
 					public void onAnimationEnd(Animator animation) {
-						mCallback.onViewSwiped(downView, downPosition);
+						if ( downView.getParent() != null ) {
+							mCallback.onViewSwiped(downView, downPosition);
+						}
 					}
 				});
 			} else {
