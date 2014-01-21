@@ -25,6 +25,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
@@ -99,6 +100,7 @@ public class ContextualDialogAdapter extends BaseAdapterDecorator
 
 	@Override
 	public final View getView(int position, View convertView, ViewGroup parent) {
+		Log.d( "inbox test", "getview #" + position );
 		ContextualDialogView contextualDialogView = (ContextualDialogView) convertView;
 		if (contextualDialogView == null) {
 			contextualDialogView = new ContextualDialogView(
@@ -348,13 +350,15 @@ public class ContextualDialogAdapter extends BaseAdapterDecorator
 		}
 
 		private void handleCurrentItem() {
-			int position = getAbsListView().getPositionForView(mDismissView);
-
-			if (getAbsListView() instanceof ListView) {
-				position -= ((ListView) getAbsListView()).getHeaderViewsCount();
+			if ( mDismissView != null && mDismissView.getParent() != null ) {
+				int position = getAbsListView().getPositionForView(mDismissView);
+	
+				if (getAbsListView() instanceof ListView) {
+					position -= ((ListView) getAbsListView()).getHeaderViewsCount();
+				}
+				if (mConfirmItemCallback != null) {
+					mConfirmItemCallback.confirmItem(position);
 			}
-			if (mConfirmItemCallback != null) {
-				mConfirmItemCallback.confirmItem(position);
 			}
 		}
 	}
