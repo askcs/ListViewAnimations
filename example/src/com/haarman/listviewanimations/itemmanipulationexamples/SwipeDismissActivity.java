@@ -15,9 +15,6 @@
  */
 package com.haarman.listviewanimations.itemmanipulationexamples;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBar.OnNavigationListener;
@@ -28,157 +25,123 @@ import android.widget.AbsListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.haarman.listviewanimations.ArrayAdapter;
 import com.haarman.listviewanimations.MyListActivity;
 import com.haarman.listviewanimations.R;
-import com.haarman.listviewanimations.itemmanipulation.OnDismissCallback;
-import com.haarman.listviewanimations.itemmanipulation.SwipeDismissAdapter;
-import com.haarman.listviewanimations.itemmanipulation.contextualdialog.ContextualDialogAdapter;
-import com.haarman.listviewanimations.itemmanipulation.contextualdialog.ContextualDialogAdapter.CancelItemCallback;
-import com.haarman.listviewanimations.itemmanipulation.contextualdialog.ContextualDialogAdapter.ConfirmItemCallback;
-import com.haarman.listviewanimations.itemmanipulation.contextualundo.ContextualUndoAdapter;
-import com.haarman.listviewanimations.itemmanipulation.contextualundo.ContextualUndoAdapter.CountDownFormatter;
-import com.haarman.listviewanimations.itemmanipulation.contextualundo.ContextualUndoAdapter.DeleteItemCallback;
+import com.nhaarman.listviewanimations.ArrayAdapter;
+import com.nhaarman.listviewanimations.itemmanipulation.OnDismissCallback;
+import com.nhaarman.listviewanimations.itemmanipulation.swipedismiss.SwipeDismissAdapter;
+import com.nhaarman.listviewanimations.itemmanipulation.swipedismiss.contextualundo.ContextualUndoAdapter;
+import com.nhaarman.listviewanimations.itemmanipulation.swipedismiss.contextualundo.ContextualUndoAdapter.CountDownFormatter;
+import com.nhaarman.listviewanimations.itemmanipulation.swipedismiss.contextualundo.ContextualUndoAdapter.DeleteItemCallback;
+
+import java.util.Arrays;
 
 public class SwipeDismissActivity extends MyListActivity<Integer> implements OnNavigationListener, OnDismissCallback, DeleteItemCallback, ConfirmItemCallback, CancelItemCallback {
 
-	private ArrayAdapter<Integer> mAdapter;
+    private ArrayAdapter<Integer> mAdapter;
 
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
+    @Override
+    protected void onCreate(final Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
 
-		mAdapter = createListAdapter();
+        mAdapter = createListAdapter();
 
-		setSwipeDismissAdapter();
+        setSwipeDismissAdapter();
 
-		getSupportActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
-		getSupportActionBar().setListNavigationCallbacks(new AnimSelectionAdapter(), this);
-		getSupportActionBar().setDisplayShowTitleEnabled(false);
-	}
-	
-	@Override
-	protected ArrayList<Integer> getItems() {
-		return getIntegerItems();
-	}
+        getSupportActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
+        getSupportActionBar().setListNavigationCallbacks(new AnimSelectionAdapter(), this);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+    }
 
-	@Override
-	public void onDismiss(AbsListView listView, int[] reverseSortedPositions) {
-		for (int position : reverseSortedPositions) {
-			mAdapter.remove(position);
-		}
-		Toast.makeText(this, "Removed positions: " + Arrays.toString(reverseSortedPositions), Toast.LENGTH_SHORT).show();
-	}
+    private void setSwipeDismissAdapter() {
+        SwipeDismissAdapter adapter = new SwipeDismissAdapter(mAdapter, this);
+        adapter.setAbsListView(getListView());
+        getListView().setAdapter(adapter);
+    }
 
-	@Override
-	public void deleteItem(int position) {
-		mAdapter.remove(position);
-		mAdapter.notifyDataSetChanged();
-	}
-	
-	@Override
-	public void confirmItem(int position) {
-	  Toast.makeText( this, "confirmed", Toast.LENGTH_SHORT ).show();
-	  mAdapter.remove(position);
-    mAdapter.notifyDataSetChanged();
-	}
-	@Override
-  public void cancelItem(int position) {
-	  Toast.makeText( this, "canceled", Toast.LENGTH_SHORT ).show();
-    // noop
-  }
-	
-	private void setSwipeDismissAdapter() {
-		SwipeDismissAdapter adapter = new SwipeDismissAdapter(mAdapter, this);
-		adapter.setAbsListView(getListView());
-		getListView().setAdapter(adapter);
-	}
+    @Override
+    public void onDismiss(final AbsListView listView, final int[] reverseSortedPositions) {
+        for (int position : reverseSortedPositions) {
+            mAdapter.remove(position);
+        }
+        Toast.makeText(this, "Removed positions: " + Arrays.toString(reverseSortedPositions), Toast.LENGTH_SHORT).show();
+    }
 
-	private void setContextualUndoAdapter() {
-		ContextualUndoAdapter adapter = new ContextualUndoAdapter(mAdapter, R.layout.undo_row, R.id.undo_row_undobutton);
-		adapter.setAbsListView(getListView());
-		getListView().setAdapter(adapter);
-		adapter.setDeleteItemCallback(this);
-	}
+    private void setContextualUndoAdapter() {
+        ContextualUndoAdapter adapter = new ContextualUndoAdapter(mAdapter, R.layout.undo_row, R.id.undo_row_undobutton, this);
+        adapter.setAbsListView(getListView());
+        getListView().setAdapter(adapter);
+    }
 
-	private void setContextualUndoWithTimedDeleteAdapter() {
-		ContextualUndoAdapter adapter = new ContextualUndoAdapter(mAdapter, R.layout.undo_row, R.id.undo_row_undobutton, 3000);
-		adapter.setAbsListView(getListView());
-		getListView().setAdapter(adapter);
-		adapter.setDeleteItemCallback(this);
-	}
+    @Override
+    public void deleteItem(final int position) {
+        mAdapter.remove(position);
+        mAdapter.notifyDataSetChanged();
+    }
 
-	private void setContextualUndoWithTimedDeleteAndCountDownAdapter() {
-		ContextualUndoAdapter adapter = new ContextualUndoAdapter(mAdapter, R.layout.undo_row, R.id.undo_row_undobutton, 3000, R.id.undo_row_texttv, new MyFormatCountDownCallback());
-		adapter.setAbsListView(getListView());
-		getListView().setAdapter(adapter);
-		adapter.setDeleteItemCallback(this);
-	}
+    private void setContextualUndoWithTimedDeleteAdapter() {
+        ContextualUndoAdapter adapter = new ContextualUndoAdapter(mAdapter, R.layout.undo_row, R.id.undo_row_undobutton, 3000, this);
+        adapter.setAbsListView(getListView());
+        getListView().setAdapter(adapter);
+    }
 
-	private void setContextualDialogAdapter() {
-		ContextualDialogAdapter adapter = new ContextualDialogAdapter(mAdapter, R.layout.dialog_row, R.id.dialog_row_confirmbutton, R.id.dialog_row_cancelbutton);
-		adapter.setAbsListView(getListView());
-		getListView().setAdapter(adapter);
-		adapter.setConfirmItemCallback( this );
-		adapter.setCancelItemCallback( this );
-	}
-	
-	private class MyFormatCountDownCallback implements CountDownFormatter {
+    private void setContextualUndoWithTimedDeleteAndCountDownAdapter() {
+        ContextualUndoAdapter adapter = new ContextualUndoAdapter(mAdapter, R.layout.undo_row, R.id.undo_row_undobutton, 3000, R.id.undo_row_texttv, this, new MyFormatCountDownCallback());
+        adapter.setAbsListView(getListView());
+        getListView().setAdapter(adapter);
+    }
 
-		@Override
-		public String getCountDownString(long millisUntilFinished) {
-			int seconds = (int) Math.ceil((millisUntilFinished / 1000.0));
+    private class MyFormatCountDownCallback implements CountDownFormatter {
 
-			if (seconds > 0) {
-				return getResources().getQuantityString(R.plurals.countdown_seconds, seconds, seconds);
-			}
-			return getString(R.string.countdown_dismissing);
-		}
-	}
+        @Override
+        public String getCountDownString(final long millisUntilFinished) {
+            int seconds = (int) Math.ceil(millisUntilFinished / 1000.0);
+
+            if (seconds > 0) {
+                return getResources().getQuantityString(R.plurals.countdown_seconds, seconds, seconds);
+            }
+            return getString(R.string.countdown_dismissing);
+        }
+    }
 
 	/* Non-ListViewAnimations related stuff below */
 
-	@Override
-	public boolean onNavigationItemSelected(int itemPosition, long itemId) {
-		switch (itemPosition) {
-		case 0:
-			setSwipeDismissAdapter();
-			return true;
-		case 1:
-			setContextualUndoAdapter();
-			return true;
-		case 2:
-			setContextualUndoWithTimedDeleteAdapter();
-			return true;
-		case 3:
-			setContextualUndoWithTimedDeleteAndCountDownAdapter();
-			return true;
-		case 4:
-			setContextualDialogAdapter();
-			return true;
-		default:
-			return false;
-		}
-	}
+    @Override
+    public boolean onNavigationItemSelected(final int itemPosition, final long itemId) {
+        switch (itemPosition) {
+            case 0:
+                setSwipeDismissAdapter();
+                return true;
+            case 1:
+                setContextualUndoAdapter();
+                return true;
+            case 2:
+                setContextualUndoWithTimedDeleteAdapter();
+                return true;
+            case 3:
+                setContextualUndoWithTimedDeleteAndCountDownAdapter();
+                return true;
+            default:
+                return false;
+        }
+    }
 
-	private class AnimSelectionAdapter extends ArrayAdapter<String> {
+    private class AnimSelectionAdapter extends ArrayAdapter<String> {
 
-		public AnimSelectionAdapter() {
-			addAll("Swipe-To-Dismiss", "Contextual Undo", "CU - Timed Delete", "CU - Count Down", "Contextual Dialog");
-		}
+        public AnimSelectionAdapter() {
+            addAll("Swipe-To-Dismiss", "Contextual Undo", "CU - Timed Delete", "CU - Count Down");
+        }
 
-		@Override
-		public View getView(int position, View convertView, ViewGroup parent) {
-			TextView tv = (TextView) convertView;
-			if (tv == null) {
-				tv = (TextView) LayoutInflater.from(SwipeDismissActivity.this).inflate(android.R.layout.simple_list_item_1, parent, false);
-			}
+        @Override
+        public View getView(final int position, final View convertView, final ViewGroup parent) {
+            TextView tv = (TextView) convertView;
+            if (tv == null) {
+                tv = (TextView) LayoutInflater.from(SwipeDismissActivity.this).inflate(android.R.layout.simple_list_item_1, parent, false);
+            }
 
-			tv.setText(getItem(position));
+            tv.setText(getItem(position));
 
-			return tv;
-		}
-	}
-
-	
+            return tv;
+        }
+    }
 }

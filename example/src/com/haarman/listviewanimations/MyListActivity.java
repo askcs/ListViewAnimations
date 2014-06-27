@@ -25,12 +25,14 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.TextView;
 
-public abstract class MyListActivity<T> extends BaseActivity {
+import com.nhaarman.listviewanimations.ArrayAdapter;
+
+public class MyListActivity extends BaseActivity {
 
 	private ListView mListView;
 
 	@Override
-	protected void onCreate(Bundle savedInstanceState) {
+	protected void onCreate(final Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_mylist);
 		mListView = (ListView) findViewById(R.id.activity_mylist_listview);
@@ -61,15 +63,15 @@ public abstract class MyListActivity<T> extends BaseActivity {
 	
 	private class MyListAdapter extends ArrayAdapter<T> {
 
-		private Context mContext;
+		private final Context mContext;
 
-		public MyListAdapter(Context context, ArrayList<T> items) {
+		public MyListAdapter(final Context context, final ArrayList<Integer> items) {
 			super(items);
 			mContext = context;
 		}
 
 		@Override
-		public long getItemId(int position) {
+		public long getItemId(final int position) {
 			return getItem(position).hashCode();
 		}
 
@@ -79,7 +81,7 @@ public abstract class MyListActivity<T> extends BaseActivity {
 		}
 
 		@Override
-		public View getView(int position, View convertView, ViewGroup parent) {
+		public View getView(final int position, final View convertView, final ViewGroup parent) {
 			TextView tv = (TextView) convertView;
 			if (tv == null) {
 				tv = (TextView) LayoutInflater.from(mContext).inflate(R.layout.list_row, parent, false);
