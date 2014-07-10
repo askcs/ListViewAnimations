@@ -97,7 +97,6 @@ public class ContextualDialogAdapter extends BaseAdapterDecorator
 
 	@Override
 	public final View getView(int position, View convertView, ViewGroup parent) {
-		Log.d( "inbox test", "getview #" + position );
 		ContextualDialogView contextualDialogView = (ContextualDialogView) convertView;
 		if (contextualDialogView == null) {
 			contextualDialogView = new ContextualDialogView(
