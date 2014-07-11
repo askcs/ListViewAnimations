@@ -16,7 +16,7 @@
  * limitations under the License.
  */
 
-package com.haarman.listviewanimations.itemmanipulation.contextualdialog;
+package com.nhaarman.listviewanimations.itemmanipulation.contextualdialog;
 
 import static com.nineoldandroids.view.ViewHelper.setAlpha;
 import static com.nineoldandroids.view.ViewHelper.setTranslationX;
