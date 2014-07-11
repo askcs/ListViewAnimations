@@ -15,8 +15,9 @@ import android.widget.TextView;
 import com.haarman.listviewanimations.ArrayAdapter;
 import com.haarman.listviewanimations.MyListActivity;
 import com.haarman.listviewanimations.R;
-import com.haarman.listviewanimations.itemmanipulation.contextualdialog.ContextualDialogAdapter;
-import com.haarman.listviewanimations.itemmanipulation.contextualdialog.ContextualDialogAdapter.ConfirmItemCallback;
+import com.haarman.listviewanimations.itemmanipulation.swipedialog.SwipeDialogAdapter;
+import com.haarman.listviewanimations.itemmanipulation.swipedialog.SwipeDialogAdapter.ConfirmItemCallback;
+import com.haarman.listviewanimations.itemmanipulation.swipedialog.SwipeDialogAdapter.CancelItemCallback;
 
 public class ItemContextMenuActivity
 extends MyListActivity<ItemContextMenuActivity.Message>
@@ -103,7 +104,7 @@ implements OnNavigationListener {
 	}
 	
 	private void setSwipeItemContextMenuAdapter() {
-		ContextualDialogAdapter adapter = new ContextualDialogAdapter(mAdapter, R.layout.dialog_row, R.id.dialog_row_confirmbutton, R.id.dialog_row_cancelbutton);
+		SwipeDialogAdapter adapter = new SwipeDialogAdapter(mAdapter, R.layout.dialog_row, R.id.dialog_row_confirmbutton, R.id.dialog_row_cancelbutton);
 		adapter.setAbsListView(getListView());
 		getListView().setAdapter(adapter);
 		adapter.setConfirmItemCallback( new ConfirmItemCallback() {
@@ -113,7 +114,12 @@ implements OnNavigationListener {
 				mAdapter.notifyDataSetChanged();
 			}
 		} );
-		//adapter.setCancelItemCallback( this );
+		adapter.setCancelItemCallback( new CancelItemCallback() {
+			@Override
+			public void cancelItem(int position) {
+				//
+			}
+		}  );
 	}
 	
 	
